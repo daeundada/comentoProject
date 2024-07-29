@@ -1,6 +1,8 @@
 package cmtproject.comento.global.jwt;
 
 import cmtproject.comento.global.detail.UserDetailsServiceImpl;
+import cmtproject.comento.global.response.CustomException;
+import cmtproject.comento.global.response.ErrorCode;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -41,14 +43,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             tokenValue = jwtUtil.substringToken(tokenValue);
 
             if (!jwtUtil.validateToken(tokenValue)) {
-                log.error("토큰 에러");
-                return;
+                throw new CustomException(ErrorCode.BAD_REQUEST);
             }
 
-            Claims username = jwtUtil.getUserInfoFromToken(tokenValue);
+            Claims userinfo = jwtUtil.getUserInfoFromToken(tokenValue);
 
             try {
-                setAuthentication(username.getSubject());
+                setAuthentication(userinfo.getSubject());
             } catch (Exception e) {
                 log.error(e.getMessage());
                 return;
