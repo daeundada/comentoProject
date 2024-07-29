@@ -3,11 +3,15 @@ package cmtproject.comento.auth.service;
 import cmtproject.comento.auth.dto.AuthRequestDTO;
 import cmtproject.comento.auth.entity.User;
 import cmtproject.comento.auth.repository.UserRepository;
-import jakarta.servlet.http.HttpServletResponse;
+import cmtproject.comento.global.response.CustomException;
+import cmtproject.comento.global.response.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -15,27 +19,17 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public User signUser(AuthRequestDTO authRequestDTO) {
+    public void signUser(AuthRequestDTO authRequestDTO) {
 
         User user = new User();
 
-        if (userRepository.findByUsername(authRequestDTO.getUsername()) != null) {
-            throw new IllegalAccessError("중복된 사용자가 존재합니다.");
+        if (userRepository.findByUsername(authRequestDTO.getUsername()).isPresent()) {
+            throw new CustomException(ErrorCode.BAD_REQUEST);
         }
 
         user.setUsername(authRequestDTO.getUsername());
         user.setPassword(passwordEncoder.encode(authRequestDTO.getPassword()));
 
-        return userRepository.save(user);
-    }
-
-    public void loginUser(AuthRequestDTO authRequestDTO, HttpServletResponse response) {
-
-        User user = userRepository.findByUsername(authRequestDTO.getUsername());
-
-        // 비밀번호 확인
-        if (!passwordEncoder.matches(authRequestDTO.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
+        userRepository.save(user);
     }
 }
