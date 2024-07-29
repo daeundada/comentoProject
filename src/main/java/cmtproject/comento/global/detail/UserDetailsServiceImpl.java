@@ -2,6 +2,8 @@ package cmtproject.comento.global.detail;
 
 import cmtproject.comento.auth.entity.User;
 import cmtproject.comento.auth.repository.UserRepository;
+import cmtproject.comento.global.response.CustomException;
+import cmtproject.comento.global.response.ErrorCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,12 +19,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND));
 
-        if (user == null) {
-            throw new UsernameNotFoundException("유저를 찾을수 없다");
-        }
-        // 로드된 사용자 정보를 UserDetails 객체로 반환
         return new UserDetailsImpl(user);
     }
 }
