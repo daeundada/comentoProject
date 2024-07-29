@@ -1,7 +1,9 @@
 package cmtproject.comento.global.jwt;
 
 import cmtproject.comento.auth.dto.AuthRequestDTO;
+import cmtproject.comento.auth.dto.AuthResponseDTO;
 import cmtproject.comento.global.detail.UserDetailsImpl;
+import cmtproject.comento.global.response.ApiResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,18 +33,18 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         log.info("로그인 시도");
         try {
-            AuthRequestDTO requestDto =
+            AuthRequestDTO requestDTO =
                     new ObjectMapper().readValue(request.getInputStream(), AuthRequestDTO.class);
 
             return getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            requestDto.getUsername(),
-                            requestDto.getPassword(),
+                            requestDTO.getUsername(),
+                            requestDTO.getPassword(),
                             null
                     )
             );
         } catch (IOException e) {
-            log.error(e.getMessage());
+            log.error("요청 데이터 읽기 오류: {}", e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
     }
@@ -52,22 +54,38 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain chain,
-            Authentication authResult) {
+            Authentication authResult) throws IOException {
 
         log.info("로그인 성공 및 JWT 생성");
-        String username = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
 
-        String token = jwtUtil.createToken(username);
+        UserDetailsImpl userDetails = ((UserDetailsImpl) authResult.getPrincipal());
+
+        String token = jwtUtil.createToken(userDetails.getUsername());
+
         jwtUtil.addJwtToCookie(token, response);
+
+        AuthResponseDTO authResponseDTO = new AuthResponseDTO(userDetails.getUser());
+
+        ApiResponse<Object> apiResponse = new ApiResponse<>("로그인 성공", authResponseDTO);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(new ObjectMapper().writeValueAsString(apiResponse));
     }
 
     @Override
     protected void unsuccessfulAuthentication(
             HttpServletRequest request,
             HttpServletResponse response,
-            AuthenticationException failed) {
+            AuthenticationException failed) throws IOException {
 
-        log.info("로그인 실패");
-        response.setStatus(401);
+        log.info("로그인 실패:{}", failed.getMessage());
+
+        ApiResponse<Object> apiResponse = new ApiResponse<>(
+                "로그인 실패 : " + failed.getMessage(), null);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(new ObjectMapper().writeValueAsString(apiResponse));
     }
 }
