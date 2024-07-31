@@ -1,7 +1,7 @@
-package cmtproject.comento.auth.controller;
+package cmtproject.comento.domain.auth.controller;
 
-import cmtproject.comento.auth.dto.AuthRequestDTO;
-import cmtproject.comento.auth.service.AuthService;
+import cmtproject.comento.domain.auth.dto.AuthRequestDTO;
+import cmtproject.comento.domain.auth.service.AuthService;
 import cmtproject.comento.global.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/auth")
+@RequestMapping("/api/auths")
 public class AuthController {
 
     private final AuthService authService;

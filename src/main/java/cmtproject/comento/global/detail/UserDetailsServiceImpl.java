@@ -1,7 +1,7 @@
 package cmtproject.comento.global.detail;
 
-import cmtproject.comento.auth.entity.User;
-import cmtproject.comento.auth.repository.UserRepository;
+import cmtproject.comento.domain.auth.entity.User;
+import cmtproject.comento.domain.auth.repository.UserRepository;
 import cmtproject.comento.global.response.CustomException;
 import cmtproject.comento.global.response.ErrorCode;
 import org.springframework.beans.factory.annotation.Autowired;

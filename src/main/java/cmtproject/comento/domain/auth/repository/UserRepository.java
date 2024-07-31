@@ -1,6 +1,6 @@
-package cmtproject.comento.auth.repository;
+package cmtproject.comento.domain.auth.repository;
 
-import cmtproject.comento.auth.entity.User;
+import cmtproject.comento.domain.auth.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

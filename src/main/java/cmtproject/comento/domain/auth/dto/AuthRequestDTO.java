@@ -1,4 +1,4 @@
-package cmtproject.comento.auth.dto;
+package cmtproject.comento.domain.auth.dto;
 
 import lombok.Getter;
 
