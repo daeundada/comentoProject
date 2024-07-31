@@ -1,4 +1,4 @@
-package cmtproject.comento.auth.entity;
+package cmtproject.comento.domain.auth.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

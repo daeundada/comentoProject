@@ -1,6 +1,6 @@
 package cmtproject.comento.global.detail;
 
-import cmtproject.comento.auth.entity.User;
+import cmtproject.comento.domain.auth.entity.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

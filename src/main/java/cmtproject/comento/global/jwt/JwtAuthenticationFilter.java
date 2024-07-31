@@ -1,7 +1,7 @@
 package cmtproject.comento.global.jwt;
 
-import cmtproject.comento.auth.dto.AuthRequestDTO;
-import cmtproject.comento.auth.dto.AuthResponseDTO;
+import cmtproject.comento.domain.auth.dto.AuthRequestDTO;
+import cmtproject.comento.domain.auth.dto.AuthResponseDTO;
 import cmtproject.comento.global.detail.UserDetailsImpl;
 import cmtproject.comento.global.response.ApiResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,6 +1,6 @@
-package cmtproject.comento.auth.dto;
+package cmtproject.comento.domain.auth.dto;
 
-import cmtproject.comento.auth.entity.User;
+import cmtproject.comento.domain.auth.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

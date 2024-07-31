@@ -1,8 +1,8 @@
-package cmtproject.comento.auth.service;
+package cmtproject.comento.domain.auth.service;
 
-import cmtproject.comento.auth.dto.AuthRequestDTO;
-import cmtproject.comento.auth.entity.User;
-import cmtproject.comento.auth.repository.UserRepository;
+import cmtproject.comento.domain.auth.dto.AuthRequestDTO;
+import cmtproject.comento.domain.auth.entity.User;
+import cmtproject.comento.domain.auth.repository.UserRepository;
 import cmtproject.comento.global.response.CustomException;
 import cmtproject.comento.global.response.ErrorCode;
 import lombok.RequiredArgsConstructor;
